@@ -1,0 +1,2 @@
+{{ system | re("system") }}{{ ignore(".*") }}
+{{ ignore(".*") }} {{ ip_address | IP }}/{{ cidr }}{{ ignore(".*") }}

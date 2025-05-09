@@ -1,0 +1,33 @@
+---
+sync_devices:
+  hostname:
+    commands:
+      - command: "show system information"
+        parser: "ttp"
+        jpath: "[0].['hostname']"  # yamllint disable-line rule:quoted-strings
+        post_processor: "{{ obj[0] }}"
+  serial:
+    commands:
+      - command: "show chassis detail"
+        parser: "ttp"
+        jpath: "[0][].*"  # yamllint disable-line rule:quoted-strings
+        post_processor: "{{ obj[0][0] }}"
+  device_type:
+    commands:
+      - command: "show system information"
+        parser: "ttp"
+        jpath: "[0].['device_type']"  # yamllint disable-line rule:quoted-strings
+        post_processor: "{{ obj | upper }}"
+  mgmt_interface:
+    commands:
+      - command: "show router interface 'system'"
+        parser: "ttp"
+        jpath: "[?ip_address=='{{ obj }}'].system"  # yamllint disable-line rule:quoted-strings
+        post_processor: "{{ obj }}"
+  mask_length:
+    commands:
+      - command: "show router interface 'system'"
+        parser: "ttp"
+        jpath: "[?ip_address=='{{ obj }}'].cidr"
+        post_processor: "{{ obj }}"
+        iterable_type: "int"
