@@ -20,14 +20,14 @@ sync_devices:
         post_processor: "{{ obj | upper }}"
   mgmt_interface:
     commands:
-      - command: "show router interface 'system'"
+      - command: "show router interface system"
         parser: "ttp"
         jpath: "[?ip_address=='{{ obj }}'].system"  # yamllint disable-line rule:quoted-strings
-        post_processor: "{{ obj }}"
+        post_processor: "{{ obj[0] }}"
   mask_length:
     commands:
-      - command: "show router interface 'system'"
+      - command: "show router interface system"
         parser: "ttp"
         jpath: "[?ip_address=='{{ obj }}'].cidr"
-        post_processor: "{{ obj }}"
+        post_processor: "{{ obj[0] }}"
         iterable_type: "int"
