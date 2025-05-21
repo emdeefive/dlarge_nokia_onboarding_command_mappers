@@ -3,31 +3,31 @@ sync_devices:
   hostname:
     commands:
       - command: "show system info"
-        parser: "ttp"
-        jpath: "[*].hostname"
+        parser: "raw"
+        jpath: "raw"
         post_processor: "{{ obj[0] }}"
   serial:
     commands:
       - command: "show system info"
-        parser: "ttp"
-        jpath: "[*].serial"
+        parser: "raw"
+        jpath: "raw"
         post_processor: "{{ obj[0] }}"
   device_type:
     commands:
       - command: "show system info"
-        parser: "ttp"
-        jpath: "[*].model"
+        parser: "raw"
+        jpath: "raw"
         post_processor: "{{ obj[0] }}"
   mgmt_interface:
     commands:
       - command: "show system info"
-        parser: "ttp"
-        jpath: "[*].model"
+        parser: "raw"
+        jpath: "raw"
         post_processor: "{{ obj[0] }}"
   mask_length:
     commands:
       - command: "show system info"
-        parser: "ttp"
-        jpath: "[*].netmask"
-        post_processor: "{{ obj[0] | netmask_to_cidr }}"
-        iterable_type: "int"
+        parser: "raw"
+        jpath: "raw"
+        # post_processor: "{{ obj[0] | netmask_to_cidr }}"
+        # iterable_type: "int"
