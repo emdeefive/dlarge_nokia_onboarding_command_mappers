@@ -1,0 +1,21 @@
+---
+- name: "0000 BACKUP POSTGRESQL DATABASE"
+  hosts: "database"
+  gather_facts: true
+  tasks:
+
+    - name: "0010 VALIDATE PGSQL BACKUPS DIRECTORY EXISTS"
+      ansible.builtin.file:
+        path: "/var/lib/pgsql/backups/"
+        state: "directory"
+        mode: "700"
+      become: true
+      become_user: "postgres"
+
+    - name: "0020 DUMP POSTGRESQL DATABASE"
+      community.postgresql.postgresql_db:
+        name: "nautobot"
+        state: "dump"
+        target: "/vol1/sqlBackups/nautobot-{{ ansible_limit }}.sql"
+      become: true
+      become_user: "postgres"
