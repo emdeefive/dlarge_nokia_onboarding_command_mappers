@@ -1,0 +1,9 @@
+from nornir_nautobot.plugins.tasks.dispatcher.default import NapalmDefault, NetmikoDefault
+
+
+class {{ item.class }}(NetmikoDefault) :
+{% if item.dispatcher_code is defined and item.dispatcher_code is not none %}
+    {{ item.dispatcher_code | indent(4) }}
+{% else %}
+    config_command = "{{ item.config_command }}"
+{% endif %}

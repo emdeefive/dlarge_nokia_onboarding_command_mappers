@@ -1,0 +1,27 @@
+- name: "41827 - GENERATE NAUTOBOT 2.x CUSTOM DISPATCHERS FOLDER"
+  ansible.builtin.file:
+    path: "{{ nautobot_root }}/custom_dispatchers"
+    state: directory
+    owner: "{{ nautobot_user }}"
+    group: "{{ nautobot_group }}"
+    mode: "0755"
+  become: true
+  when: >
+       nautobot_apps_config is defined and
+       'nautobot_golden_config' in nautobot_apps_config and
+       'custom_dispatcher' in nautobot_apps_config['nautobot_golden_config']
+
+
+- name: "41828 - GENERATE NAUTOBOT 2.x CUSTOM DISPATCHERS"
+  ansible.builtin.template:
+    src: templates/custom_dispatchers.j2
+    dest: "{{ nautobot_root }}/custom_dispatchers/{{ item.platform }}.py"
+    owner: "{{ nautobot_user }}"
+    group: "{{ nautobot_group }}"
+    mode: "0755"
+  loop: "{{ custom_dispatchers }}"
+  become: true
+  when: >
+       nautobot_apps_config is defined and
+       'nautobot_golden_config' in nautobot_apps_config and
+       'custom_dispatcher' in nautobot_apps_config['nautobot_golden_config']

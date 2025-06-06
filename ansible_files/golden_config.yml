@@ -1,0 +1,8 @@
+     nautobot_golden_config:
+           enable_backup: true
+           enable_compliance: true
+           enable_intended: true
+           enable_sotagg: true
+           custom_dispatcher:
+                 nokia_sros:
+                          "custom_dispatchers.nokia_sros.NetmikoNokiaSros"
