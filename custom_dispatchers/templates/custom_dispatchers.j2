@@ -1,5 +1,5 @@
 from nornir_nautobot.plugins.tasks.dispatcher.default import NapalmDefault, NetmikoDefault
-
+from nornir.core.task import Result, Task
 
 class {{ item.class }}(NetmikoDefault) :
 {% if item.dispatcher_code is defined and item.dispatcher_code is not none %}
