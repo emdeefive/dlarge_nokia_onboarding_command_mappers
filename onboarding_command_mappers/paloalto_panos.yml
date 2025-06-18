@@ -21,8 +21,8 @@ sync_devices:
   mgmt_interface:
     commands:
       - command: "show system info"
-        parser: "raw"
-        jpath: "raw"
+        parser: "ttp"
+        jpath: "[*].netmask"
         post_processor: "Management Interface"
   mask_length:
     commands:
