@@ -6,3 +6,5 @@
            custom_dispatcher:
                  nokia_sros:
                           "custom_dispatchers.nokia_sros.NetmikoNokiaSros"
+                 paloalto_panos:
+                          "custom_dispatchers.nokia_sros.NetmikoPaloAltoPanos"
