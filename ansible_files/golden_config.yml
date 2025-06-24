@@ -7,4 +7,4 @@
                  nokia_sros:
                           "custom_dispatchers.nokia_sros.NetmikoNokiaSros"
                  paloalto_panos:
-                          "custom_dispatchers.nokia_sros.NetmikoPaloAltoPanos"
+                          "custom_dispatchers.paloalto_panos.NetmikoPaloAltoPanos"
