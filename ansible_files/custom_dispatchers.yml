@@ -17,6 +17,26 @@ custom_dispatchers:
 
                 output = conn.send_command("admin display-config")
                 return Result(host=task.host, result={"output": {command: output}})
+         - platform: "paloalto_panos"
+           class: "NetmikoPaloAltoPanos"
+           config_command: null
+           dispatcher_code: |
+             @classmethod
+             def get_command(cls, task: Task, logger, obj, command, **kwargs):
+                logger.debug(f"Executing get_command for {task.host.name} on {task.host.platform}")
+                host = task.host
+                conn = ConnectHandler(
+                      device_type=host.data["netmiko_driver"],
+                      host=host.hostname,
+                      username=host.username,
+                      password=host.password,
+                      secret=host.password
+                      )
+
+                conn.send_command("set cli config-output-format set")
+                conn.send_command("configure")
+                output = conn.send_command("show")
+                return Result(host=task.host, result={"output": {command: output}})
          - platform: "fortinet"
            class: "NetmikoFortinet"
            config_command: null
