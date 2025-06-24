@@ -33,9 +33,12 @@ custom_dispatchers:
                       secret=host.password
                       )
 
-                conn.send_command("set cli config-output-format set")
-                conn.send_command("configure")
-                output = conn.send_command("show")
+                prompt = net_connect.find_prompt()
+                prompt = prompt[:-1]
+                prompt = re.escape(prompt)
+                conn.send_command("set cli config-output-format set", expect_string=prompt)
+                conn.send_command("configure", expect_string=prompt)
+                output = conn.send_command("show", expect_string=prompt)
                 return Result(host=task.host, result={"output": {command: output}})
          - platform: "fortinet"
            class: "NetmikoFortinet"
