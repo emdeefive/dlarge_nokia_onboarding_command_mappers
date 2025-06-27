@@ -21,25 +21,26 @@ custom_dispatchers:
            class: "NetmikoPaloAltoPanos"
            config_command: null
            dispatcher_code: |
-             @classmethod
-             def get_command(cls, task: Task, logger, obj, command, **kwargs):
-                logger.debug(f"Executing get_command for {task.host.name} on {task.host.platform}")
-                host = task.host
-                conn = ConnectHandler(
-                      device_type=host.data["netmiko_driver"],
-                      host=host.hostname,
-                      username=host.username,
-                      password=host.password,
-                      secret=host.password
+            config_command = "show config running"
+            @classmethod
+            def get_config( 
+                cls,
+                task: Task,
+                *args,
+                **kwargs
+            ) -> Result:
+                extra = task.run(
+                          task=netmiko_send_command,
+                          command_string='set cli op-command-xml-output on',
                       )
 
-                prompt = conn.find_prompt()
-                prompt = prompt[:-1]
-                prompt = re.escape(prompt)
-                conn.send_command("set cli config-output-format set", expect_string=prompt)
-                conn.send_command("configure", expect_string=prompt)
-                output = conn.send_command("show", expect_string=prompt)
-                return Result(host=task.host, result={"output": {command: output}})
+                command=cls.config_command
+                result = task.run(
+                        task=netmiko_send_command,
+                        command_string=command,
+                        enable=True, 
+                    )
+                return super(PaloAltoMergedConfigDispatcher, cls).get_config(task,**kwargs)
          - platform: "fortinet"
            class: "NetmikoFortinet"
            config_command: null
