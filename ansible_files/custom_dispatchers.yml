@@ -40,7 +40,7 @@ custom_dispatchers:
                         command_string=command,
                         enable=True, 
                     )
-                return super(PaloAltoMergedConfigDispatcher, cls).get_config(task,**kwargs)
+                return super(NetmikoPaloAltoPanos, cls).get_config(task,**kwargs)
          - platform: "fortinet"
            class: "NetmikoFortinet"
            config_command: null
