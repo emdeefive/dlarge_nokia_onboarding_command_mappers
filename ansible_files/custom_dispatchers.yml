@@ -21,9 +21,9 @@ custom_dispatchers:
            class: "NetmikoPaloAltoPanos"
            config_command: null
            dispatcher_code: |
-            config_command = "show config running"
+            config_command = "show config effective-running"
             @classmethod
-            def get_config( 
+            def get_config(
                 cls,
                 task: Task,
                 *args,
@@ -33,8 +33,14 @@ custom_dispatchers:
                           task=netmiko_send_command,
                           command_string='set cli op-command-xml-output on',
                       )
-
-                command=cls.config_command
+                check_pano = task.run(
+                          task=netmiko_send_command,
+                          command_string='show system info',
+                      )
+                if "system-mode: panorama" in check_pano:
+                    commmand="show config running"
+                else:
+                    command=cls.config_command
                 result = task.run(
                         task=netmiko_send_command,
                         command_string=command,
