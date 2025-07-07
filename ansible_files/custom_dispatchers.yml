@@ -29,6 +29,7 @@ custom_dispatchers:
                 *args,
                 **kwargs
             ) -> Result:
+                command=cls.config_command
                 extra = task.run(
                           task=netmiko_send_command,
                           command_string='set cli op-command-xml-output on',
@@ -37,10 +38,10 @@ custom_dispatchers:
                           task=netmiko_send_command,
                           command_string='show system info',
                       )
-                if "system-mode: panorama" in check_pano:
+                if check_pano[0].failed:
+                  return check_pano
+                if "system-mode: panorama" in check_pano[0].result:
                     commmand="show config running"
-                else:
-                    command=cls.config_command
                 result = task.run(
                         task=netmiko_send_command,
                         command_string=command,
