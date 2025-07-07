@@ -41,12 +41,12 @@ custom_dispatchers:
                       task=netmiko_send_command,
                       command_string='show system info',
                   )
-                logger.debug(f"Completed check_pano task for {task.host.name}")
                 except NornirSubTaskError as exc:
                   error_msg = f"`E1020:` Session preparation failed. `{exc.result.exception}`"
                   logger.error(error_msg, extra={"object": obj})
                   raise NornirNautobotException(error_msg)
 
+                logger.debug(f"Completed check_pano task for {task.host.name}")
                 logger.debug(f"check_pano[0].result task for {task.host.name} is {check_pano[0].result}")
                 length = len(check_pano[0].result)
                 logger.debug(f"check_pano[0].result length for {task.host.name} is {length}")
