@@ -30,16 +30,24 @@ custom_dispatchers:
                 **kwargs
             ) -> Result:
                 command=cls.config_command
-                extra = task.run(
-                          task=netmiko_send_command,
-                          command_string='set cli op-command-xml-output on',
-                      )
-                check_pano = task.run(
-                          task=netmiko_send_command,
-                          command_string='show system info',
-                      )
+
+                try:
+                  extra = task.run(
+                      task=netmiko_send_command,
+                      command_string='set cli op-command-xml-output on',
+                  )
+                  check_pano = task.run(
+                      task=netmiko_send_command,
+                      command_string='show system info',
+                  )
+                except NornirSubTaskError as exc:
+                  error_msg = f"`E1020:` Session preparation failed. `{exc.result.exception}`"
+                  logger.error(error_msg, extra={"object": obj})
+                  raise NornirNautobotException(error_msg)
+
                 if check_pano[0].failed:
                   return check_pano
+                  
                 if "system-mode: panorama" in check_pano[0].result:
                     commmand="show config running"
                 result = task.run(
