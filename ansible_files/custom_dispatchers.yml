@@ -26,6 +26,7 @@ custom_dispatchers:
             def get_config(
                 cls,
                 task: Task,
+                logger,
                 *args,
                 **kwargs
             ) -> Result:
