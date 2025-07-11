@@ -33,14 +33,10 @@ custom_dispatchers:
                       task=netmiko_send_command,
                       command_string='show system info',
                   )
-                  logger.debug(f"Check_pano result: {check_pano[0].result}")
                   if check_pano[0].failed:
                     return check_pano
                   if "panorama" in check_pano[0].result:
-                    logger.debug(f"In pano check pre:  {command}")
-                    commmand="show config running"
-                    logger.debug(f"In pano check after:  {command}")
-                  logger.debug(f"Config command after conditional: {command}")
+                    command="show config effective-running"
                   extra = task.run(
                       task=netmiko_send_command,
                       command_string='set cli op-command-xml-output on',
