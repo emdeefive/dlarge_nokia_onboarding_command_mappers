@@ -23,23 +23,23 @@ custom_dispatchers:
            dispatcher_code: |
             config_command = "show config effective-running"
             @classmethod
-            def get_config(
-                cls,
-                task: Task,
-                *args,
-                **kwargs
+            def get_config(  # pylint: disable=too-many-arguments,too-many-locals,too-many-positional-arguments
+                cls, task: Task, logger, obj, backup_file: str, remove_lines: list, substitute_lines: list
             ) -> Result:
-                command=cls.config_command
 
+                command=cls.config_command
                 try:
                   check_pano = task.run(
                       task=netmiko_send_command,
                       command_string='show system info',
                   )
+                  logger.debug(f"Check_pano result: {check_pano[0].result}")
+                  logger.debug(f"Type check_pano result: {str(type(check_pano[0].result))}")
                   if check_pano[0].failed:
                     return check_pano
                   if "system-mode: panorama" in check_pano[0].result:
                       commmand="show config running"
+                  logger.debug(f"Config command after conditional: {command}")
                   extra = task.run(
                       task=netmiko_send_command,
                       command_string='set cli op-command-xml-output on',
