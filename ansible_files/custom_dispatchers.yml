@@ -34,10 +34,9 @@ custom_dispatchers:
                       command_string='show system info',
                   )
                   logger.debug(f"Check_pano result: {check_pano[0].result}")
-                  logger.debug(f"Type check_pano result: {str(type(check_pano[0].result))}")
                   if check_pano[0].failed:
                     return check_pano
-                  if "system-mode: panorama" in check_pano[0].result:
+                  if "panorama" in check_pano[0].result:
                       commmand="show config running"
                   logger.debug(f"Config command after conditional: {command}")
                   extra = task.run(
