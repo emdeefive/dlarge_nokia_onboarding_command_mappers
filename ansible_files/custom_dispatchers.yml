@@ -37,7 +37,9 @@ custom_dispatchers:
                   if check_pano[0].failed:
                     return check_pano
                   if "panorama" in check_pano[0].result:
-                      commmand="show config running"
+                    logger.debug(f"In pano check pre:  {command}")
+                    commmand="show config running"
+                    logger.debug(f"In pano check after:  {command}")
                   logger.debug(f"Config command after conditional: {command}")
                   extra = task.run(
                       task=netmiko_send_command,
