@@ -1,1 +1,1 @@
-{{ ignore(".*") }}name: {{ interface }}     status: enable    mode: static    ip: {{ ip_address }} {{ netmask }}{{ ignore(".*") }}
+name: {{ interface }} mode: {{ mode }} ip: {{ ip_address }} {{ netmask }}{{ ignore(".*") }}

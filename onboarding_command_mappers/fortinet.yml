@@ -4,25 +4,30 @@ sync_devices:
     commands:
       - command: "get system status"
         parser: "ttp"
-        jpath: "raw"  # yamllint disable-line rule:quoted-strings
+        jpath: "[0].['hostname']"  # yamllint disable-line rule:quoted-strings
+        post_processor: "{{ obj[0] }}"
   serial:
     commands:
       - command: "get system status"
         parser: "ttp"
-        jpath: "raw"  # yamllint disable-line rule:quoted-strings
+        jpath: "[0].['serial']"  # yamllint disable-line rule:quoted-strings
+        post_processor: "{{ obj[0] }}"
   device_type:
     commands:
       - command: "get system status"
         parser: "ttp"
-        jpath: "raw"  # yamllint disable-line rule:quoted-strings
+        jpath: "[0].['device_type']"  # yamllint disable-line rule:quoted-strings
+        post_processor: "{{ obj | upper }}"
   mgmt_interface:
     commands:
       - command: "get system interface"
         parser: "ttp"
-        jpath: "raw"  # yamllint disable-line rule:quoted-strings
+        jpath: "[0][?ip_address=='{{ obj }}'].interface"  # yamllint disable-line rule:quoted-strings
+        post_processor: "{{ obj[0] }}"
   mask_length:
     commands:
       - command: "get system interface"
         parser: "ttp"
-        jpath: "raw"  # yamllint disable-line rule:quoted-strings
+        jpath: "[0][?ip_address=='{{ obj }}'].netmask"
+        post_processor: "{{ obj[0] | netmask_to_cidr  }}"
         iterable_type: "int"
