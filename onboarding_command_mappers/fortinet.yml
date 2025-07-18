@@ -17,7 +17,7 @@ sync_devices:
       - command: "get system status"
         parser: "ttp"
         jpath: "[0].[device_type]"  # yamllint disable-line rule:quoted-strings
-        post_processor: "{{ obj | upper }}"
+        post_processor: "{{ obj[0] | upper }}"
   mgmt_interface:
     commands:
       - command: "get system interface"
