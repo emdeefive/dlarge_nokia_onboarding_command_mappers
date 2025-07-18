@@ -8,3 +8,5 @@
                           "custom_dispatchers.nokia_sros.NetmikoNokiaSros"
                  paloalto_panos:
                           "custom_dispatchers.paloalto_panos.NetmikoPaloAltoPanos"
+                 fortinet:
+                          "custom_dispatchers.fortinet.NetmikoFortinet"
