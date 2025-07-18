@@ -26,11 +26,13 @@ custom_dispatchers:
             def get_config(
                 cls,
                 task: Task,
+                logger,
                 *args,
                 **kwargs
             ) -> Result:
 
                 command=cls.config_command
+                logger.debug(f"Executing get_command for {task.host.name} on {task.host.platform}")
                 try:
                   check_pano = task.run(
                       task=netmiko_send_command,
@@ -38,14 +40,19 @@ custom_dispatchers:
                   )
                   if check_pano[0].failed:
                     return check_pano
+                  logger.debug(f"Config command var for {task.host.name} before if statement: {command}")
+                  logger.debug(f"Output from 'show system info command' for {task.host.name}: {check_pano[0].result}")
                   if "panorama" in check_pano[0].result:
+                    logger.debug(f"Config command var for {task.host.name} inside if statement before change: {command}")
                     command="show config"
+                    logger.debug(f"Config command var for {task.host.name} before if statement after change: {command}")
                   extra = task.run(
                       task=netmiko_send_command,
                       command_string='set cli op-command-xml-output on',
                   )
                 except NornirSubTaskError as exc:
                   error_msg = f"`E1020:` Session preparation failed. `{exc.result.exception}`"
+                  logger.error(error_msg, extra={"object": obj})
                   raise NornirNautobotException(error_msg)
 
                 result = task.run(
@@ -53,7 +60,7 @@ custom_dispatchers:
                         command_string=command,
                         enable=True, 
                     )
-                return super(NetmikoPaloAltoPanos, cls).get_config(task,**kwargs)
+                return super(NetmikoPaloAltoPanos, cls).get_config(task, logger, **kwargs)
          - platform: "fortinet"
            class: "NetmikoFortinet"
            config_command: null
