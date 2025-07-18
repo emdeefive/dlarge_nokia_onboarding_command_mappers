@@ -57,7 +57,10 @@ custom_dispatchers:
                   raise NornirNautobotException(error_msg)
 
                 logger.debug(f"Running config command for {task.host.name}: {command}")
-                output = conn.send_command("command")
+                output = task.run(
+                      task=netmiko_send_command,
+                      command_string=command,
+                  )
                 return Result(host=task.host, result={"output": {command: output}})
          - platform: "fortinet"
            class: "NetmikoFortinet"
