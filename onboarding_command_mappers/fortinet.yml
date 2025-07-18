@@ -4,19 +4,19 @@ sync_devices:
     commands:
       - command: "get system status"
         parser: "ttp"
-        jpath: "[0].['hostname']"  # yamllint disable-line rule:quoted-strings
+        jpath: "[0].[hostname]"  # yamllint disable-line rule:quoted-strings
         post_processor: "{{ obj[0] }}"
   serial:
     commands:
       - command: "get system status"
         parser: "ttp"
-        jpath: "[0].['serial']"  # yamllint disable-line rule:quoted-strings
+        jpath: "[0].[serial]"  # yamllint disable-line rule:quoted-strings
         post_processor: "{{ obj[0] }}"
   device_type:
     commands:
       - command: "get system status"
         parser: "ttp"
-        jpath: "[0].['device_type']"  # yamllint disable-line rule:quoted-strings
+        jpath: "[0].[device_type]"  # yamllint disable-line rule:quoted-strings
         post_processor: "{{ obj | upper }}"
   mgmt_interface:
     commands:
