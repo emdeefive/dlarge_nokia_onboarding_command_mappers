@@ -3,31 +3,26 @@ sync_devices:
   hostname:
     commands:
       - command: "get system status"
-        parser: "ttp"
-        jpath: "[0].['hostname']"  # yamllint disable-line rule:quoted-strings
-        post_processor: "{{ obj[0] }}"
+        parser: "raw"
+        jpath: "raw"  # yamllint disable-line rule:quoted-strings
   serial:
     commands:
       - command: "get system status"
-        parser: "ttp"
-        jpath: "[0].['serial']"  # yamllint disable-line rule:quoted-strings
-        post_processor: "{{ obj[0] }}"
+        parser: "raw"
+        jpath: "raw"  # yamllint disable-line rule:quoted-strings
   device_type:
     commands:
       - command: "get system status"
-        parser: "ttp"
-        jpath: "[0].['device_type']"  # yamllint disable-line rule:quoted-strings
-        post_processor: "{{ obj | upper }}"
+        parser: "raw"
+        jpath: "raw"  # yamllint disable-line rule:quoted-strings
   mgmt_interface:
     commands:
       - command: "get system interface"
-        parser: "ttp"
-        jpath: "[0][?ip_address=='{{ obj }}'].interface"  # yamllint disable-line rule:quoted-strings
-        post_processor: "{{ obj[0] }}"
+        parser: "raw"
+        jpath: "raw"  # yamllint disable-line rule:quoted-strings
   mask_length:
     commands:
       - command: "get system interface"
-        parser: "ttp"
-        jpath: "[0][?ip_address=='{{ obj }}'].netmask"
-        post_processor: "{{ obj[0] | netmask_to_cidr  }}"
+        parser: "raw"
+        jpath: "raw"  # yamllint disable-line rule:quoted-strings
         iterable_type: "int"
