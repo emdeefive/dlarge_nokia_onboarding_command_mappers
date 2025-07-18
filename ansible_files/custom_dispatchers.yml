@@ -38,8 +38,12 @@ custom_dispatchers:
                   )
                   if check_pano[0].failed:
                     return check_pano
+                  logger.debug(f"Config command var before if statement: {command}")
+                  logger.debug(f"Output from 'show system info command': {check_pano[0].result}")
                   if "panorama" in check_pano[0].result:
+                    logger.debug(f"Config command var inside if statement before change: {command}")
                     command="show config effective-running"
+                    logger.debug(f"Config command var before if statement after change: {command}")
                   extra = task.run(
                       task=netmiko_send_command,
                       command_string='set cli op-command-xml-output on',
