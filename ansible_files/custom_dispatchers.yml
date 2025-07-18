@@ -23,7 +23,7 @@ custom_dispatchers:
            dispatcher_code: |
              @classmethod
              def get_command(cls, task: Task, logger, obj, command, **kwargs):
-                command = "show config effective-running"
+                config_command = "show config effective-running"
                 logger.debug(f"Executing get_command for {task.host.name} on {task.host.platform}")
 
                 try:
@@ -33,12 +33,12 @@ custom_dispatchers:
                   )
                   if check_pano[0].failed:
                     return check_pano
-                  logger.debug(f"Config command var for {task.host.name} before if statement: {command}")
+                  logger.debug(f"Config command var for {task.host.name} before if statement: {config_command}")
                   logger.debug(f"Output from 'show system info command' for {task.host.name}: {check_pano[0].result}")
                   if "panorama" in check_pano[0].result:
-                    logger.debug(f"Config command var for {task.host.name} inside if statement before change: {command}")
-                    command="show config running"
-                    logger.debug(f"Config command var for {task.host.name} inside if statement after change: {command}")
+                    logger.debug(f"Config command var for {task.host.name} inside if statement before change: {config_command}")
+                    config_command = "show config running"
+                    logger.debug(f"Config command var for {task.host.name} inside if statement after change: {config_command}")
                   extra = task.run(
                       task=netmiko_send_command,
                       command_string='set cli op-command-xml-output on',
@@ -48,11 +48,12 @@ custom_dispatchers:
                   logger.error(error_msg, extra={"object": obj})
                   raise NornirNautobotException(error_msg)
 
-                logger.debug(f"Running config command for {task.host.name}: {command}")
-                output = task.run(
+                logger.debug(f"Running config command for {task.host.name}: {config_command}")
+                config = task.run(
                       task=netmiko_send_command,
-                      command_string=command,
+                      command_string=config_command,
                   )
+                output = config[0].result
                 return Result(host=task.host, result={"output": {command: output}})
          - platform: "fortinet"
            class: "NetmikoFortinet"
