@@ -3,26 +3,26 @@ sync_devices:
   hostname:
     commands:
       - command: "get system status"
-        parser: "raw"
+        parser: "ttp"
         jpath: "raw"  # yamllint disable-line rule:quoted-strings
   serial:
     commands:
       - command: "get system status"
-        parser: "raw"
+        parser: "ttp"
         jpath: "raw"  # yamllint disable-line rule:quoted-strings
   device_type:
     commands:
       - command: "get system status"
-        parser: "raw"
+        parser: "ttp"
         jpath: "raw"  # yamllint disable-line rule:quoted-strings
   mgmt_interface:
     commands:
       - command: "get system interface"
-        parser: "raw"
+        parser: "ttp"
         jpath: "raw"  # yamllint disable-line rule:quoted-strings
   mask_length:
     commands:
       - command: "get system interface"
-        parser: "raw"
+        parser: "ttp"
         jpath: "raw"  # yamllint disable-line rule:quoted-strings
         iterable_type: "int"
